@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1062456751635",
+    "project_id": "social-feed-app-9472a",
+    "storage_bucket": "social-feed-app-9472a.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1062456751635:android:d0f89f5ef6a21dea2331e6",
+        "android_client_info": {
+          "package_name": "com.manish_practical_task.manish_practical_task"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC3uwQ2BgYuwYO3VtpemQIaXippniChULk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
