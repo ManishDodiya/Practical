@@ -19,6 +19,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final _messageController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  final _scrollController = ScrollController();
 
   @override
   void initState() {
@@ -29,7 +30,22 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void dispose() {
     _messageController.dispose();
+    _scrollController.dispose();
     super.dispose();
+  }
+
+  void _scrollToBottom() {
+    if (_scrollController.hasClients) {
+      Future.delayed(const Duration(milliseconds: 300), () {
+        if (_scrollController.hasClients) {
+          _scrollController.animateTo(
+            0.0,
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeOut,
+          );
+        }
+      });
+    }
   }
 
   void _createPost() {
@@ -94,7 +110,13 @@ class _HomeScreenState extends State<HomeScreen> {
         body: Column(
           children: [
             Expanded(
-              child: BlocBuilder<PostBloc, PostState>(
+              child: BlocConsumer<PostBloc, PostState>(
+                listener: (context, state) {
+                  // Scroll to bottom when posts are loaded or updated
+                  if (state is PostLoaded) {
+                    _scrollToBottom();
+                  }
+                },
                 builder: (context, state) {
                   if (state is PostLoading) {
                     return const Center(
@@ -141,10 +163,13 @@ class _HomeScreenState extends State<HomeScreen> {
                         context.read<PostBloc>().add(const PostLoadRequested());
                       },
                       child: ListView.builder(
+                        controller: _scrollController,
+                        reverse: true,
                         padding: const EdgeInsets.all(8),
                         itemCount: posts.length,
                         itemBuilder: (context, index) {
-                          final post = posts[index];
+                          final reversedIndex = posts.length - 1 - index;
+                          final post = posts[reversedIndex];
                           final formattedDate = DateFormat('MMM dd, yyyy • hh:mm a').format(post.timestamp);
 
                           return Card(
